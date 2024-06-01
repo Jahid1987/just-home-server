@@ -3,7 +3,11 @@ const { getDb } = require("../db/connection");
 // reading all items
 async function getreviews(req, res) {
   try {
-    const reviews = await getDb().collection("reviews").find().toArray();
+    const reviews = await getDb()
+      .collection("reviews")
+      .find()
+      .sort({ created_at: -1 })
+      .toArray();
     if (!reviews) {
       res.status(404).send("reviews not found");
     }

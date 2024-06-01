@@ -2,8 +2,17 @@ const { ObjectId } = require("mongodb");
 const { getDb } = require("../db/connection");
 
 async function getProperties(req, res) {
+  const limit = parseInt(req.query.limit);
+  let query = {};
+  if (!req.query.limit) {
+    query = req.query;
+  }
   try {
-    const properties = await getDb().collection("properties").find().toArray();
+    const properties = await getDb()
+      .collection("properties")
+      .find(query)
+      .limit(limit)
+      .toArray();
     if (!properties) {
       res.status(404).send("properties not found");
     }
