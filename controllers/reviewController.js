@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDb } = require("../db/connection");
-
+// reading all items
 async function getreviews(req, res) {
   try {
     const reviews = await getDb().collection("reviews").find().toArray();
@@ -38,6 +38,7 @@ async function getReviewById(req, res) {
     res.status(500).send(err.message);
   }
 }
+// updating single item
 async function updateReview(req, res) {
   try {
     const filter = { _id: new ObjectId(req.params.id) };

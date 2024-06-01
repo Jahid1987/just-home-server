@@ -9,6 +9,7 @@ const port = process.env.PORT || 5000;
 const authRoutes = require("./routes/authRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const cityRoutes = require("./routes/cityRoutes");
 
 // middlewares
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use(cookiePerser());
 app.use("/auth", authRoutes);
 app.use("/properties", propertyRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/cities", cityRoutes);
 
 // Connecting to the server and then listening to the routers hit
 connectDb()
