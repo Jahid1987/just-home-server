@@ -13,7 +13,8 @@ async function connectDb() {
       deprecationErrors: true,
     },
   });
-  // await client.connect();
+  await client.connect();
+  console.log("database connected successfully");
   db = client.db(dbName);
 }
 
