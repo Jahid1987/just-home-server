@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const cityRoutes = require("./routes/cityRoutes");
+const allpropertiesRoutes = require("./routes/allpropertiesRoutes");
 
 // middlewares
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use(cookiePerser());
 
 app.use("/auth", authRoutes);
 app.use("/properties", propertyRoutes);
+app.use("/allproperties", allpropertiesRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cities", cityRoutes);
 
