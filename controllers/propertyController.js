@@ -35,18 +35,117 @@ async function createProperty(req, res) {
 // reading single item
 async function getPropertyById(req, res) {
   try {
-    const query = { _id: new ObjectId(req.params.id) };
-
-    const property = await getDb().collection("properties").findOne(query);
+    const pipeline = [
+      {
+        $match: { _id: new ObjectId(req.params.id) },
+      },
+      {
+        $lookup: {
+          from: "reviews",
+          localField: "_id",
+          foreignField: "propertyId",
+          as: "reviews",
+        },
+      },
+      {
+        $unwind: {
+          path: "$reviews",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "reviews.userId",
+          foreignField: "_id",
+          as: "reviewer",
+        },
+      },
+      {
+        $unwind: {
+          path: "$reviewer",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          title: { $first: "$title" },
+          details: { $first: "$details" },
+          price_range: { $first: "$price_range" },
+          location: { $first: "$location" },
+          image: { $first: "$image" },
+          agentId: { $first: "$agentId" },
+          verification_status: { $first: "$verification_status" },
+          reviews: {
+            $push: {
+              rating: "$reviews.rating",
+              comment: "$reviews.comment",
+              user_name: "$reviewer.name",
+              user_image: "$reviewer.image",
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          reviews: {
+            $cond: {
+              if: { $eq: ["$reviews", [{}]] },
+              then: [],
+              else: "$reviews",
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "agentId",
+          foreignField: "_id",
+          as: "agent",
+        },
+      },
+      {
+        $unwind: "$agent",
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          details: 1,
+          price_range: 1,
+          location: 1,
+          image: 1,
+          agentId: 1,
+          agent_name: "$agent.name",
+          verification_status: 1,
+          reviews: {
+            $filter: {
+              input: "$reviews",
+              as: "review",
+              cond: { $ne: ["$$review.user_name", null] },
+            },
+          },
+        },
+      },
+    ];
+    const property = await getDb()
+      .collection("properties")
+      .aggregate(pipeline)
+      .toArray();
 
     if (!property) {
       return res.status(404).send("property not found.");
     }
-    res.status(200).send(property);
+    // as aggregation returns array, I have to send first element of the array to the client
+    res.status(200).send(property[0]);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
+
+// update a single item
 async function updateProperty(req, res) {
   try {
     const filter = { _id: new ObjectId(req.params.id) };

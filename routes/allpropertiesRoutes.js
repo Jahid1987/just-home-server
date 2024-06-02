@@ -10,14 +10,9 @@ router.get("/", async (req, res) => {
         $match: { verification_status: "verified" },
       },
       {
-        $addFields: {
-          agentObjectId: { $toObjectId: "$agentId" },
-        },
-      },
-      {
         $lookup: {
           from: "users",
-          localField: "agentObjectId",
+          localField: "agentId",
           foreignField: "_id",
           as: "agent",
         },
