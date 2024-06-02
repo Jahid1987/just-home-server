@@ -12,6 +12,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const allpropertiesRoutes = require("./routes/allpropertiesRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // middlewares
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/allproperties", allpropertiesRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cities", cityRoutes);
 app.use("/wishlists", wishlistRoutes);
+app.use("/users", userRoutes);
 
 // Connecting to the server and then listening to the routers hit
 connectDb()

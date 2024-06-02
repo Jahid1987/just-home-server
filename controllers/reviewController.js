@@ -20,9 +20,29 @@ async function getreviews(req, res) {
 // creating single item
 async function createReview(req, res) {
   try {
-    const review = req.body;
-    const result = await getDb().collection("reviews").insertOne(review);
-    res.status(201).send(result);
+    const {
+      propertyId,
+      userId,
+      property_title,
+      user_name,
+      user_image,
+      rating,
+      comment,
+      created_at,
+    } = req.body;
+    const review = {
+      propertyId: new ObjectId(propertyId),
+      userId: new ObjectId(userId),
+      property_title,
+      user_name,
+      user_image,
+      rating,
+      comment,
+      created_at,
+    };
+    console.log(review);
+    // const result = await getDb().collection("reviews").insertOne(review);
+    // res.status(201).send(result);
   } catch (err) {
     res.status(500).send(err.message);
   }

@@ -119,6 +119,7 @@ async function getPropertyById(req, res) {
           image: 1,
           agentId: 1,
           agent_name: "$agent.name",
+          agent_image: "$agent.image",
           verification_status: 1,
           reviews: {
             $filter: {
