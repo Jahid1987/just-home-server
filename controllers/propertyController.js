@@ -56,8 +56,8 @@ async function getPropertyById(req, res) {
       {
         $lookup: {
           from: "users",
-          localField: "reviews.userId",
-          foreignField: "_id",
+          localField: "reviews.reviewr_email",
+          foreignField: "email",
           as: "reviewer",
         },
       },
@@ -136,7 +136,7 @@ async function getPropertyById(req, res) {
       .aggregate(pipeline)
       .toArray();
 
-    if (!property) {
+    if (!property.length > 0) {
       return res.status(404).send("property not found.");
     }
     // as aggregation returns array, I have to send first element of the array to the client

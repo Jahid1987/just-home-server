@@ -1,60 +1,56 @@
 const { ObjectId } = require("mongodb");
 const { getDb } = require("../db/connection");
 // reading all items
-async function getreviews(req, res) {
+async function getOffers(req, res) {
   try {
-    const reviews = await getDb()
-      .collection("reviews")
+    const offers = await getDb()
+      .collection("offers")
       .find()
       .sort({ created_at: -1 })
       .toArray();
-    if (!reviews) {
-      res.status(404).send("reviews not found");
+    if (!offers) {
+      res.status(404).send("offers not found");
     }
-    res.status(200).send(reviews);
+    res.status(200).send(offers);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
 
 // creating single item
-async function createReview(req, res) {
+async function createOffer(req, res) {
   try {
-    const { propertyId, ...rest } = req.body;
-    const review = {
-      propertyId: new ObjectId(propertyId),
-      ...rest,
-    };
-    const result = await getDb().collection("reviews").insertOne(review);
+    const offer = req.body;
+    const result = await getDb().collection("offers").insertOne(offer);
     res.status(201).send(result);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
 // reading single item
-async function getReviewById(req, res) {
+async function getOfferById(req, res) {
   try {
     const query = { _id: new ObjectId(req.params.id) };
 
-    const review = await getDb().collection("reviews").findOne(query);
+    const offer = await getDb().collection("offers").findOne(query);
 
-    if (!review) {
-      return res.status(404).send("review not found.");
+    if (!offer) {
+      return res.status(404).send("offer not found.");
     }
-    res.status(200).send(review);
+    res.status(200).send(offer);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
 // updating single item
-async function updateReview(req, res) {
+async function updateOffer(req, res) {
   try {
     const filter = { _id: new ObjectId(req.params.id) };
     const updateDoc = {
       $set: { ...req.body },
     };
     const result = await getDb()
-      .collection("reviews")
+      .collection("offers")
       .updateOne(filter, updateDoc);
     res.status(201).send(result);
   } catch (err) {
@@ -62,10 +58,10 @@ async function updateReview(req, res) {
   }
 }
 // deleting item
-async function deleteReview(req, res) {
+async function deleteOffer(req, res) {
   try {
     const result = await getDb()
-      .collection("reviews")
+      .collection("offers")
       .deleteOne({ _id: new ObjectId(req.params.id) });
     res.status(204).send(result);
   } catch (err) {
@@ -74,9 +70,9 @@ async function deleteReview(req, res) {
 }
 
 module.exports = {
-  getreviews,
-  createReview,
-  getReviewById,
-  deleteReview,
-  updateReview,
+  getOffers,
+  createOffer,
+  getOfferById,
+  deleteOffer,
+  updateOffer,
 };
