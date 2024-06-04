@@ -14,6 +14,7 @@ const allpropertiesRoutes = require("./routes/allpropertiesRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const userRoutes = require("./routes/userRoutes");
 const offerRoutes = require("./routes/offerRoutes");
+const propertydetailsRoutes = require("./routes/propertydetailsRoutes");
 
 // middlewares
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use(cookiePerser());
 app.use("/auth", authRoutes);
 app.use("/properties", propertyRoutes);
 app.use("/allproperties", allpropertiesRoutes);
+app.use("/propertydetails", propertydetailsRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cities", cityRoutes);
 app.use("/wishlists", wishlistRoutes);

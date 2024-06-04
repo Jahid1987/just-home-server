@@ -4,6 +4,8 @@ const { getDb } = require("../db/connection");
 async function getProperties(req, res) {
   const limit = parseInt(req.query.limit);
   let query = {};
+
+  // sending limit from home page
   if (!req.query.limit) {
     query = req.query;
   }
@@ -35,6 +37,8 @@ async function createProperty(req, res) {
 // reading single item
 async function getPropertyById(req, res) {
   try {
+    const query = { _id: new ObjectId(req.params.id) };
+    // pipeline for single data with revies and reviewer
     const pipeline = [
       {
         $match: { _id: new ObjectId(req.params.id) },
@@ -131,16 +135,14 @@ async function getPropertyById(req, res) {
         },
       },
     ];
-    const property = await getDb()
-      .collection("properties")
-      .aggregate(pipeline)
-      .toArray();
 
-    if (!property.length > 0) {
+    const property = await getDb().collection("properties").findOne(query);
+
+    if (!property) {
       return res.status(404).send("property not found.");
     }
     // as aggregation returns array, I have to send first element of the array to the client
-    res.status(200).send(property[0]);
+    res.status(200).send(property);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -153,6 +155,7 @@ async function updateProperty(req, res) {
     const updateDoc = {
       $set: { ...req.body },
     };
+    console.log(updateDoc);
     const result = await getDb()
       .collection("properties")
       .updateOne(filter, updateDoc);

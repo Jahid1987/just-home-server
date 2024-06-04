@@ -5,7 +5,7 @@ async function getOffers(req, res) {
   try {
     const offers = await getDb()
       .collection("offers")
-      .find()
+      .find(req.query)
       .sort({ created_at: -1 })
       .toArray();
     if (!offers) {

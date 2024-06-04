@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
       {
         $lookup: {
           from: "users",
-          localField: "agentId",
-          foreignField: "_id",
+          localField: "agent_email",
+          foreignField: "email",
           as: "agent",
         },
       },
@@ -29,7 +29,8 @@ router.get("/", async (req, res) => {
           agent_name: "$agent.name",
           agent_image: "$agent.image",
           verification_status: 1,
-          price_range: 1,
+          min_price: 1,
+          max_price: 1,
         },
       },
     ];
