@@ -15,7 +15,7 @@ const wishlistRoutes = require("./routes/wishlistRoutes");
 const userRoutes = require("./routes/userRoutes");
 const offerRoutes = require("./routes/offerRoutes");
 const propertydetailsRoutes = require("./routes/propertydetailsRoutes");
-
+const paymentRoutes = require("./routes/paymentRoutes");
 // middlewares
 app.use(express.json());
 app.use(
@@ -37,6 +37,7 @@ app.use("/cities", cityRoutes);
 app.use("/wishlists", wishlistRoutes);
 app.use("/users", userRoutes);
 app.use("/offers", offerRoutes);
+app.use("/payment", paymentRoutes);
 
 // Connecting to the server and then listening to the routers hit
 connectDb()
