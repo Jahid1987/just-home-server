@@ -44,19 +44,31 @@ async function getOfferById(req, res) {
 }
 // updating single item
 async function updateOffer(req, res) {
+  const status = req.body.status;
   try {
+    if (status === "accepted") {
+      // updatgin other offers for the specific property that is accepted
+      const filter = { property_id: req.body.property_id };
+      const updatedDoc = {
+        $set: { status: "rejected" },
+      };
+      const result = await getDb()
+        .collection("offers")
+        .updateMany(filter, updatedDoc);
+    }
     const filter = { _id: new ObjectId(req.params.id) };
-    const updateDoc = {
-      $set: { ...req.body },
+    const updatedDoc = {
+      $set: { status },
     };
     const result = await getDb()
       .collection("offers")
-      .updateOne(filter, updateDoc);
+      .updateOne(filter, updatedDoc);
     res.status(201).send(result);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
+
 // deleting item
 async function deleteOffer(req, res) {
   try {
