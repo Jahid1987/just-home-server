@@ -32,11 +32,11 @@ async function createReview(req, res) {
   }
 }
 // reading single item
-async function getReviewById(req, res) {
+async function getReviewByEmail(req, res) {
   try {
-    const query = { _id: new ObjectId(req.params.id) };
+    const query = { reviewr_email: req.params.email };
 
-    const review = await getDb().collection("reviews").findOne(query);
+    const review = await getDb().collection("reviews").find(query).toArray();
 
     if (!review) {
       return res.status(404).send("review not found.");
@@ -76,7 +76,7 @@ async function deleteReview(req, res) {
 module.exports = {
   getreviews,
   createReview,
-  getReviewById,
+  getReviewByEmail,
   deleteReview,
   updateReview,
 };

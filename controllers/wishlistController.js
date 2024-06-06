@@ -5,8 +5,7 @@ async function getWishlists(req, res) {
   try {
     const wishlists = await getDb()
       .collection("wishlists")
-      .find()
-      .sort({ created_at: -1 })
+      .find(req.query)
       .toArray();
     if (!wishlists) {
       res.status(404).send("wishlists not found");
