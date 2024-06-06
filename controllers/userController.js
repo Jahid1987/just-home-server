@@ -1,13 +1,10 @@
+const { ObjectId } = require("mongodb");
 const { getDb } = require("../db/connection");
 
 // reading all items
 async function getUsers(req, res) {
   try {
-    const users = await getDb()
-      .collection("users")
-      .find()
-      .sort({ created_at: -1 })
-      .toArray();
+    const users = await getDb().collection("users").find().toArray();
     if (!users) {
       res.status(404).send("users not found");
     }
@@ -50,25 +47,34 @@ async function getUserByEmail(req, res) {
 // updating single item
 async function updateUser(req, res) {
   try {
-    const filter = { email: req.params.email };
+    const filter = { _id: new ObjectId(req.params.id) };
     const updateDoc = {
-      $set: { ...req.body },
+      $set: { role: req.body.role },
     };
+
     const result = await getDb()
       .collection("users")
       .updateOne(filter, updateDoc);
+
+    if (req.body.role === "fraud" && result.modifiedCount) {
+      const query = {
+        agent_email: req.body.email,
+      };
+      const results = await getDb().collection("properties").deleteMany(query);
+      console.log(results);
+    }
     res.status(201).send(result);
   } catch (err) {
+    console.log(err);
     res.status(500).send(err.message);
   }
 }
 // deleting item
 async function deleteUser(req, res) {
-  console.log(req.params.email);
   try {
     const result = await getDb()
       .collection("users")
-      .deleteOne({ email: req.params.email });
+      .deleteOne({ _id: new ObjectId(req.params.id) });
     res.status(204).send(result);
   } catch (err) {
     res.status(500).send(err.message);

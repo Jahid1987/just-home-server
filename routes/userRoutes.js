@@ -13,6 +13,6 @@ const router = express.Router();
 router.get("/", getUsers);
 router.post("/", createUser);
 router.get("/:email", getUserByEmail);
-router.delete("/:email", deleteUser);
-router.patch("/:email", updateUser);
+router.delete("/:id", deleteUser);
+router.patch("/:id", updateUser);
 module.exports = router;

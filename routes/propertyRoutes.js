@@ -15,6 +15,6 @@ router.post("/", createProperty);
 router.get("/:id", getPropertyById);
 router.delete("/:id", deleteProperty);
 router.patch("/:id", updateProperty);
-// this for change property's status
+// this for change property's status. TO DO: it will be only for admin route
 router.post("/updatestatus", updatePropertyStatus);
 module.exports = router;
