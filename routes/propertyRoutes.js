@@ -5,6 +5,7 @@ const {
   getPropertyById,
   deleteProperty,
   updateProperty,
+  updatePropertyStatus,
 } = require("../controllers/propertyController");
 
 const router = express.Router();
@@ -14,4 +15,6 @@ router.post("/", createProperty);
 router.get("/:id", getPropertyById);
 router.delete("/:id", deleteProperty);
 router.patch("/:id", updateProperty);
+// this for change property's status
+router.post("/updatestatus", updatePropertyStatus);
 module.exports = router;

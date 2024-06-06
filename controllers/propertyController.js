@@ -175,11 +175,26 @@ async function deleteProperty(req, res) {
     res.status(500).send(err.message);
   }
 }
-
+async function updatePropertyStatus(req, res) {
+  try {
+    // updating status of properties
+    const filter = { _id: new ObjectId(req.body.id) };
+    const updatedDoc = {
+      $set: { verification_status: req.body.status },
+    };
+    const result = await getDb()
+      .collection("properties")
+      .updateOne(filter, updatedDoc);
+    res.status(201).send(result);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
 module.exports = {
   getProperties,
   createProperty,
   getPropertyById,
   deleteProperty,
   updateProperty,
+  updatePropertyStatus,
 };
