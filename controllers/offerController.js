@@ -46,8 +46,8 @@ async function getOfferById(req, res) {
 async function updateOffer(req, res) {
   const status = req.body.status;
   try {
+    // updatgin other offers for the specific property that is accepted
     if (status === "accepted") {
-      // updatgin other offers for the specific property that is accepted
       const filter = { property_id: req.body.property_id };
       const updatedDoc = {
         $set: { status: "rejected" },
@@ -56,6 +56,7 @@ async function updateOffer(req, res) {
         .collection("offers")
         .updateMany(filter, updatedDoc);
     }
+    // updating status of offer
     const filter = { _id: new ObjectId(req.params.id) };
     const updatedDoc = {
       $set: { status },

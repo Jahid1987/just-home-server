@@ -37,7 +37,7 @@ app.use("/cities", cityRoutes);
 app.use("/wishlists", wishlistRoutes);
 app.use("/users", userRoutes);
 app.use("/offers", offerRoutes);
-app.use("/payment", paymentRoutes);
+app.use("/payments", paymentRoutes);
 
 // Connecting to the server and then listening to the routers hit
 connectDb()
