@@ -2,18 +2,26 @@ const { ObjectId } = require("mongodb");
 const { getDb } = require("../db/connection");
 
 async function getProperties(req, res) {
-  const limit = parseInt(req.query.limit);
-  let query = {};
+  const { location, limit, sort, ...rest } = req.query;
 
-  // sending limit from home page
-  if (!req.query.limit) {
-    query = req.query;
+  const query = {
+    $or: [{ location: new RegExp(location, "i") }],
+    ...rest,
+  };
+
+  let sortBy = {};
+  if ([sort][0] !== "") {
+    sortBy = {
+      [sort]: 1,
+    };
   }
+
   try {
     const properties = await getDb()
       .collection("properties")
       .find(query)
-      .limit(limit)
+      .limit(parseInt(limit))
+      .sort(sortBy)
       .toArray();
     if (!properties) {
       res.status(404).send("properties not found");

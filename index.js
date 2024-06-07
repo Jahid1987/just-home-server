@@ -20,7 +20,12 @@ const paymentRoutes = require("./routes/paymentRoutes");
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://just-home-625cb.web.app",
+      "https://just-home-625cb.firebaseapp.com",
+    ],
     credentials: true,
   })
 );
