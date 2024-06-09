@@ -6,17 +6,30 @@ const {
   deleteProperty,
   updateProperty,
   updatePropertyStatus,
+  updateAdvertisementStatus,
 } = require("../controllers/propertyController");
 const authenticateToken = require("../middleware/authMiddleware");
+const verifyRole = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-router.get("/", authenticateToken, getProperties);
+router.get("/", getProperties);
 // ToDo:  only agent role can add property not user/admin/fraud
-router.post("/", createProperty);
-router.get("/:id", getPropertyById);
-router.delete("/:id", deleteProperty);
-router.patch("/:id", updateProperty);
-// this for change property's status. TO DO: it will be only for admin route
-router.post("/updatestatus", updatePropertyStatus);
+router.post("/", authenticateToken, createProperty);
+router.get("/:id", authenticateToken, getPropertyById);
+router.delete("/:id", authenticateToken, deleteProperty);
+router.patch("/:id", authenticateToken, updateProperty);
+// this for change property's status. DONE: it will be only for admin route
+router.post(
+  "/updatestatus",
+  authenticateToken,
+  verifyRole("admin"),
+  updatePropertyStatus
+);
+router.post(
+  "/advertise",
+  authenticateToken,
+  verifyRole("admin"),
+  updateAdvertisementStatus
+);
 module.exports = router;

@@ -1,6 +1,6 @@
 const { getDb } = require("../db/connection");
 
-function roleMiddleware(allowedRoles) {
+function verifyRole(allowedRoles) {
   return async (req, res, next) => {
     const user = await getDb()
       .collection("users")
@@ -25,4 +25,4 @@ function roleMiddleware(allowedRoles) {
     }
   };
 }
-module.exports = roleMiddleware;
+module.exports = verifyRole;

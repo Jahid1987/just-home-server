@@ -198,6 +198,23 @@ async function updatePropertyStatus(req, res) {
     res.status(500).send(err.message);
   }
 }
+
+async function updateAdvertisementStatus(req, res) {
+  try {
+    // updating status of properties
+    const filter = { _id: new ObjectId(req.body.id) };
+    const updatedDoc = {
+      $set: { advertiesment_status: req.body.status },
+    };
+    const options = { upsert: true };
+    const result = await getDb()
+      .collection("properties")
+      .updateOne(filter, updatedDoc, options);
+    res.status(201).send("result");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
 module.exports = {
   getProperties,
   createProperty,
@@ -205,4 +222,5 @@ module.exports = {
   deleteProperty,
   updateProperty,
   updatePropertyStatus,
+  updateAdvertisementStatus,
 };
