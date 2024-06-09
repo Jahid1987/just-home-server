@@ -6,12 +6,13 @@ const {
   deleteReview,
   updateReview,
 } = require("../controllers/reviewController");
+const authenticateToken = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 router.get("/", getreviews);
-router.post("/", createReview);
+router.post("/", authenticateToken, createReview);
 router.get("/:email", getReviewByEmail);
-router.delete("/:id", deleteReview);
+router.delete("/:id", authenticateToken, deleteReview);
 router.patch("/:id", updateReview);
 module.exports = router;

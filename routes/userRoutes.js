@@ -7,12 +7,14 @@ const {
   deleteUser,
   updateUser,
 } = require("../controllers/userController");
+const authenticateToken = require("../middleware/authMiddleware");
+const verifyRole = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
 router.get("/", getUsers);
 router.post("/", createUser);
 router.get("/:email", getUserByEmail);
-router.delete("/:id", deleteUser);
-router.patch("/:id", updateUser);
+router.delete("/:id", authenticateToken, deleteUser);
+router.patch("/:id", authenticateToken, verifyRole("admin"), updateUser);
 module.exports = router;

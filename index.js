@@ -12,12 +12,12 @@ const authRoutes = require("./routes/authRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const cityRoutes = require("./routes/cityRoutes");
-const allpropertiesRoutes = require("./routes/allpropertiesRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const userRoutes = require("./routes/userRoutes");
 const offerRoutes = require("./routes/offerRoutes");
 const propertydetailsRoutes = require("./routes/propertydetailsRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const authenticateToken = require("./middleware/authMiddleware");
 // middlewares
 app.use(express.json());
 app.use(
@@ -37,14 +37,13 @@ app.use(cookiePerser());
 
 app.use("/auth", authRoutes);
 app.use("/properties", propertyRoutes);
-app.use("/allproperties", allpropertiesRoutes);
-app.use("/propertydetails", propertydetailsRoutes);
+app.use("/propertydetails", authenticateToken, propertydetailsRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cities", cityRoutes);
-app.use("/wishlists", wishlistRoutes);
+app.use("/wishlists", authenticateToken, wishlistRoutes);
 app.use("/users", userRoutes);
-app.use("/offers", offerRoutes);
-app.use("/payments", paymentRoutes);
+app.use("/offers", authenticateToken, offerRoutes);
+app.use("/payments", authenticateToken, paymentRoutes);
 
 // Connecting to the server and then listening to the routers hit
 connectDb()
