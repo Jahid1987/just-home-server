@@ -1,18 +1,15 @@
 const { getDb } = require("../db/connection");
-
-async function createUser(req, res) {
+const jwt = require("jsonwebtoken");
+async function createJwt(req, res) {
   try {
-    const isExist = await getDb()
-      .collection("users")
-      .findOne({ email: req.body.email });
-    if (isExist) {
-      return res.status(409).send("This email is already exist.");
-    }
-    const result = await getDb().collection("users").insertOne(req.body);
-    res.send(result);
+    const userEmail = req.body;
+    const token = jwt.sign(userEmail, process.env.ACCESS_TOKEN_SECRETE, {
+      expiresIn: "1h",
+    });
+    res.send(token);
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
 
-module.exports = { createUser };
+module.exports = { createJwt };

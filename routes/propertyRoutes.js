@@ -7,10 +7,11 @@ const {
   updateProperty,
   updatePropertyStatus,
 } = require("../controllers/propertyController");
+const authenticateToken = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", getProperties);
+router.get("/", authenticateToken, getProperties);
 // ToDo:  only agent role can add property not user/admin/fraud
 router.post("/", createProperty);
 router.get("/:id", getPropertyById);

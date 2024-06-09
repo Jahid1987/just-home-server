@@ -55,7 +55,7 @@ async function updateUser(req, res) {
     const result = await getDb()
       .collection("users")
       .updateOne(filter, updateDoc);
-
+    // deleting all properties of fraud user
     if (req.body.role === "fraud" && result.modifiedCount) {
       const query = {
         agent_email: req.body.email,
@@ -63,6 +63,7 @@ async function updateUser(req, res) {
       const results = await getDb().collection("properties").deleteMany(query);
       console.log(results);
     }
+
     res.status(201).send(result);
   } catch (err) {
     console.log(err);

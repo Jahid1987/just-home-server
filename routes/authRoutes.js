@@ -1,8 +1,8 @@
 const express = require("express");
-const { createUser } = require("../controllers/authController");
+const { createJwt } = require("../controllers/authController");
 
 const router = express.Router();
 
-router.post("/createuser", createUser);
+router.post("/createjwt", createJwt);
 
 module.exports = router;
