@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/", getProperties);
 // ToDo:  only agent role can add property not user/admin/fraud
-router.post("/", authenticateToken, createProperty);
+router.post("/", authenticateToken, verifyRole("agent"), createProperty);
 router.get("/:id", authenticateToken, getPropertyById);
 router.delete("/:id", authenticateToken, deleteProperty);
 router.patch("/:id", authenticateToken, updateProperty);

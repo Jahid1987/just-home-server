@@ -37,7 +37,7 @@ app.use(cookiePerser());
 
 app.use("/auth", authRoutes);
 app.use("/properties", propertyRoutes);
-app.use("/propertydetails", authenticateToken, propertydetailsRoutes);
+app.use("/propertydetails", propertydetailsRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/cities", cityRoutes);
 app.use("/wishlists", authenticateToken, wishlistRoutes);
