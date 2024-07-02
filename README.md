@@ -29,3 +29,5 @@ Live Site Link (front-end): [https://just-home-625cb.web.app/]
 2. others
    STRIPE_SECRETE=
    ACCESS_TOKEN_SECRETE=
+
+- npm dev
