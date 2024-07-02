@@ -2,7 +2,7 @@
 
 # JustHome.com
 
-3. Live Site Link (front-end): [https://just-home-625cb.web.app/]
+Live Site Link (front-end): [https://just-home-625cb.web.app/]
 
 ## 🚀 Main Features of this site(front-end)
 
