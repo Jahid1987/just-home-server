@@ -1,4 +1,3 @@
-## assignment12_category_0011
 
 # JustHome.com
 
